@@ -64,26 +64,31 @@ MovieAdapter adapter;
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = response.getJSONArray("results");
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject res = jsonArray.getJSONObject(i);
+                    try {
+                    jsonArray = response.getJSONArray("results");
+                    JSONObject res = jsonArray.getJSONObject(i);
                         Movie movie = new Movie();
                         movie.setTitle(res.getString("title"));
                         movie.setDate(res.getString("release_date"));
                         movie.setSyn(res.getString("overview"));
                         movie.setImageUrl(baseurl + res.getString("poster_path"));
-
                         movieList.add(movie);
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    }
 
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                adapter = new MovieAdapter(getApplicationContext(),movieList);
+                recyclerView.setAdapter(adapter);
 
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    adapter = new MovieAdapter(getApplicationContext(),movieList);
-                    recyclerView.setAdapter(adapter);
 
                 }
 
@@ -98,4 +103,5 @@ MovieAdapter adapter;
         queue.add(request);
 
     }
+
 }
