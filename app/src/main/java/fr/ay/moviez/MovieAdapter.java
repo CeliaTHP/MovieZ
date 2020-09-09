@@ -22,34 +22,20 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-
-    private Context mContext;
-    private ArrayList<Movie> mMovieList;
-    private List<Movie> movies;
-
-    void addMovies(List movies) {
-        this.movies = movies;
-        notifyDataSetChanged();
-    }
-
     LayoutInflater inflater;
-
-    public MovieAdapter(Context context, ArrayList<Movie> movieList) {
-
-        mContext = context;
-        mMovieList = movieList;
-
-        this.inflater = LayoutInflater.from(context);
+    List <Movie> movieList;
 
 
 
+    public MovieAdapter(Context context, List<Movie> movieList) {
 
+       this.inflater = LayoutInflater.from(context);
+       this.movieList = movieList;
 
-        //this.movies = movies;
     }
 
 
-
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = inflater.inflate(R.layout.movie_adapter,parent,false);
@@ -59,24 +45,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Movie currentItem = mMovieList.get(position);
 
-        String imageUrl = currentItem.getImageUrl();
-        String movieTitle = currentItem.getTitle();
-        String movieDate = currentItem.getDate();
-        String movieSyn = currentItem.getSyn();
-
-
-        holder.movieTitle.setText(movieTitle);
-        holder.movieDate.setText(movieDate);
-        holder.movieSyn.setText(movieSyn);
-        Picasso.get().load(imageUrl).fit().centerInside().into(holder.moviePoster);
+        holder.movieTitle.setText(movieList.get(position).getTitle());
+        holder.movieDate.setText(movieList.get(position).getDate());
+        holder.movieSyn.setText(movieList.get(position).getSyn());
+        Picasso.get().load(movieList.get(position).getImageUrl()).into(holder.moviePoster);
 
     }
 
     @Override
     public int getItemCount() {
-        return mMovieList.size();
+        return movieList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -6,16 +6,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ModuleInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -25,83 +28,74 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovieActivity extends AppCompatActivity {
 
-private RecyclerView recyclerView;
-private MovieAdapter adapter;
-private ArrayList<Movie> movieList;
-private RequestQueue mRequestQueue;
-private String baseurl = "http://image.tmdb.org/t/p/w92";
+RecyclerView recyclerView;
+List<Movie> movieList;
+private static String url = "https://api.themoviedb.org/3/trending/all/day?api_key=e4a9d54204f8ee1d8121e867e9a8a5a5";
+private static String baseurl = "http://image.tmdb.org/t/p/";
+MovieAdapter adapter;
 
-//private static String URL = "https://api.themoviedb.org/3/trending/all/day?api_key=e4a9d54204f8ee1d8121e867e9a8a5a5";
-//private MovieAdapter adapter ;
+//check.Moviexml
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_movie);
 
         recyclerView = findViewById(R.id.list_recycler_view_movie);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         movieList = new ArrayList<>();
-        mRequestQueue = Volley.newRequestQueue(this);
-
         getTrends();
-        adapter.addMovies(movieList);
 
 
-
-
+            
     }
-
 
     private void getTrends() {
 
-        String url = "https://api.themoviedb.org/3/trending/all/day?api_key=e4a9d54204f8ee1d8121e867e9a8a5a5";
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        JSONArray jsonArray = null;
-                        try {
-                            jsonArray = response.getJSONArray("results");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-
-                            JSONObject res = jsonArray.getJSONObject(i);
-
-                            String movieTitle = res.getString("title");
-                            String moviePoster = baseurl + res.getString("poster_path");
-                            String movieDate = res.getString("release_date");
-                            String movieSyn = res.getString("overview");
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = response.getJSONArray("results");
 
 
-                            movieList.add(new Movie(moviePoster, movieTitle, movieDate, movieSyn));
-                        }
-                        adapter = new MovieAdapter(MovieActivity.this, movieList);
-                        //adapter.addMovies(movieList);
-                            recyclerView.setAdapter(adapter);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject res = jsonArray.getJSONObject(i);
+                        Movie movie = new Movie();
+                        movie.setTitle(res.getString("title"));
+                        movie.setDate(res.getString("release_date"));
+                        movie.setSyn(res.getString("overview"));
+                        movie.setImageUrl(baseurl + res.getString("poster_path"));
 
-                               /* movie.setImageUrl("http://image.tmdb.org/t/p/w92" + res.getString("poster_path"));
-                                movie.setTitle(res.getString("title"));
-                                movie.setDate(res.getString("release_date"));
-                                movie.setSyn(res.getString("overview"));/
+                        movieList.add(movie);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                                movies.add(movie);*/
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
 
-                    }, new Response.ErrorListener() {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    adapter = new MovieAdapter(getApplicationContext(),movieList);
+                    recyclerView.setAdapter(adapter);
+
+                }
+
+
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
+
         });
-        mRequestQueue.add(request);
+        queue.add(request);
+
     }
 }

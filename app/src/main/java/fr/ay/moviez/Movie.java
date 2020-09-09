@@ -22,49 +22,50 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Movie {
-    private String mImageUrl;
-    private String mTitle;
-    private String mDate;
-    private String mSyn;
+    private String imageUrl;
+    private String title;
+    private String date;
+    private String syn;
 
+    public Movie() {}
     public Movie(String imageUrl, String title, String date, String syn) {
-        mImageUrl = imageUrl;
-        mTitle = title;
-        mDate = date;
-        mSyn = syn;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.date = date;
+        this.syn = syn;
 
     }
-
 
     public String getImageUrl() {
-        return mImageUrl;
+        return imageUrl;
     }
 
-    public void setImageUrl(String mImageUrl) {
-        this.mImageUrl = mImageUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDate() {
-        return mDate;
+        return date;
     }
 
-    public void setDate(String mDate) {
-        this.mDate = mDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getSyn() {
-        return mSyn;
+        return syn;
     }
 
-    public void setSyn(String mSyn) {
-        this.mSyn = mSyn;
+    public void setSyn(String syn) {
+        this.syn = syn;
     }
 }
+
