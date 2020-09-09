@@ -1,6 +1,7 @@
 package fr.ay.moviez;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,80 +9,92 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import org.w3c.dom.Text;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieItemsViewHolder> {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+
 
     private Context mContext;
-    private ArrayList<Movie> movieArrayList;
+    private ArrayList<Movie> mMovieList;
+    private List<Movie> movies;
+
+    void addMovies(List movies) {
+        this.movies = movies;
+        notifyDataSetChanged();
+    }
+
+    LayoutInflater inflater;
 
     public MovieAdapter(Context context, ArrayList<Movie> movieList) {
 
         mContext = context;
-        movieArrayList = movieList;
+        mMovieList = movieList;
 
+        this.inflater = LayoutInflater.from(context);
+
+
+
+
+
+        //this.movies = movies;
     }
 
-    @NonNull
+
+
     @Override
-    public MovieItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.movie_adapter, parent, false);
-        return new MovieItemsViewHolder(v);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = inflater.inflate(R.layout.movie_adapter,parent,false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieItemsViewHolder holder, int position) {
-        Movie currentItem = movieArrayList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String imageUrl = currentItem.getPosterUrl();
-        String movieTitle = currentItem.getMovieTitle();
-        String movieDate = currentItem.getMovieDate();
-        String movieSyn = currentItem.getMovieSyn();
+        Movie currentItem = mMovieList.get(position);
 
-        Picasso.get().load(imageUrl).fit().centerInside().into(holder.mImageView);
-        holder.mTextViewTitle.setText(movieTitle);
-        holder.mTextViewDate.setText(movieDate);
-        holder.mTextViewSyn.setText(movieSyn);
+        String imageUrl = currentItem.getImageUrl();
+        String movieTitle = currentItem.getTitle();
+        String movieDate = currentItem.getDate();
+        String movieSyn = currentItem.getSyn();
+
+
+        holder.movieTitle.setText(movieTitle);
+        holder.movieDate.setText(movieDate);
+        holder.movieSyn.setText(movieSyn);
+        Picasso.get().load(imageUrl).fit().centerInside().into(holder.moviePoster);
 
     }
 
     @Override
     public int getItemCount() {
-        return movieArrayList.size();
+        return mMovieList.size();
     }
 
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
-    public class MovieItemsViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView mImageView;
-        public TextView mTextViewTitle;
-        public TextView mTextViewDate;
-        public TextView mTextViewSyn;
-
+        public ImageView moviePoster;
+        public TextView movieTitle;
+        public TextView movieDate;
+        public TextView movieSyn;
 
 
-
-        public MovieItemsViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mImageView = itemView.findViewById(R.id.poster);
-
-            mTextViewTitle = itemView.findViewById(R.id.titleview);
-
-            mTextViewDate = itemView.findViewById(R.id.dateview);
-
-            mTextViewSyn = itemView.findViewById(R.id.synview);
-
-
+            movieTitle = itemView.findViewById(R.id.titleview);
+            movieDate = itemView.findViewById(R.id.dateview);
+            movieSyn = itemView.findViewById(R.id.synview);
+            moviePoster = itemView.findViewById(R.id.poster);
         }
+
     }
-
-
-
-
 }
-

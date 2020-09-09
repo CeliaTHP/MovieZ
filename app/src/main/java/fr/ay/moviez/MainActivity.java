@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView go ;
+    private static final String TAG = "MyActivity";
+    String string = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent otherActivity= new Intent(getApplicationContext(), MovieActivity.class);
+                Log.e(TAG, string);
+
                 startActivity(otherActivity);
                 finish();
 
