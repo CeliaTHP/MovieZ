@@ -21,18 +21,20 @@ import org.json.JSONObject;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Movie {
+public class Movie extends  ArrayList{
     private String imageUrl;
     private String title;
     private String date;
     private String syn;
+    private String id;
 
     public Movie() {}
-    public Movie(String imageUrl, String title, String date, String syn) {
+    public Movie(String imageUrl, String title, String date, String syn,String id) {
         this.imageUrl = imageUrl;
         this.title = title;
         this.date = date;
         this.syn = syn;
+        this.id = id;
 
     }
 
@@ -60,12 +62,14 @@ public class Movie {
         this.date = date;
     }
 
-    public String getSyn() {
-        return syn;
-    }
+    public String getSyn() { return syn; }
 
     public void setSyn(String syn) {
         this.syn = syn;
     }
+
+    public String getID() {return id; }
+
+    public void setID(String id) {this.id = id ;}
 }
 

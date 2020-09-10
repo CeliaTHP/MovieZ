@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class MovieActivity extends AppCompatActivity {
 RecyclerView recyclerView;
 List<Movie> movieList;
 private static String url = "https://api.themoviedb.org/3/trending/all/day?api_key=e4a9d54204f8ee1d8121e867e9a8a5a5";
-private static String baseurl = "http://image.tmdb.org/t/p/";
+private static String baseurl = "http://image.tmdb.org/t/p/w92";
 MovieAdapter adapter;
 
 //check.Moviexml
@@ -51,7 +54,15 @@ MovieAdapter adapter;
         getTrends();
 
 
-            
+        ImageView imageView = findViewById(R.id.poster_detail);
+        TextView movieTitle = findViewById(R.id.title_detail);
+        TextView movieDate = findViewById(R.id.date_detail);
+        TextView movieGen = findViewById(R.id.genre_detail);
+        TextView movieSyn = findViewById(R.id.syn_detail);
+
+
+
+
     }
 
     private void getTrends() {
@@ -76,6 +87,7 @@ MovieAdapter adapter;
                         movie.setTitle(res.getString("title"));
                         movie.setDate(res.getString("release_date"));
                         movie.setSyn(res.getString("overview"));
+                        movie.setID(res.getString("id"));
                         movie.setImageUrl(baseurl + res.getString("poster_path"));
                         movieList.add(movie);
 

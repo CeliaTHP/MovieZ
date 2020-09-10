@@ -11,5 +11,10 @@
     <string name="title_activity_movies">Movies</string>
     <string name="title_activity_movie_items">MovieItems</string>
     <string name="title_activity_movie_info">MovieInfo</string>
+    <string name="title_detail">"Titre du film "</string>
+    <string name="genre_detail">Genre</string>
+    <string name="date_detail">Date</string>
+    <string name="syn_detail">Synopsis</string>
+    <string name="info_id">ID</string>
 
 </resources>
